@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, TextField, Button, Typography, Box, Paper } from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom';
+import AuthService from '../AuthService';
 
 
 
@@ -13,6 +14,7 @@ const SignUp = () => {
     const [username, setUsername] = useState('');
     const [usernameError, setUsernameError] = useState(false);
     const navigate = useNavigate();
+  
 
     //   fetch('http://10.100.112.99:8080/api/test/all')
     //   .then(response => response.json())
@@ -33,10 +35,11 @@ const SignUp = () => {
 
 
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         let emailError = false;
         let passwordError = false;
         let usernameError = false;
+        let req= { username, email, password ,roles:["admin"]}
 
         if (!username.trim()) {
             setUsernameError("Username is required");
@@ -78,17 +81,18 @@ const SignUp = () => {
             return;
         }
 
-        // if (email === 'example@example.com' && password === 'password') {
-        //   setAuthenticated(true); // Set authentication state to true
-        //   navigate('/dashboard');
-        // } else {
-        //   // Display authentication error message
-        //   setEmailError('Invalid email or password');
-        //   setPasswordError('Invalid email or password');
-        // }
-
-        // console.log('Logging in with:', email, password);
-        // navigate('/dashboard');
+        try {
+            // Call signup method with user data
+            const authService = new AuthService();
+            const userData = await authService.signup(req);
+            
+            
+            // Handle successful signup, e.g., redirect to dashboard
+            // navigate('/dashboard');
+        } catch (error) {
+            console.error('SignUp failed:', error.message);
+            // Handle signup error, e.g., display error message to the user
+        }
     };
 
 
@@ -181,7 +185,7 @@ const SignUp = () => {
                         sx={{ mt: 3, mb: 2 }}
                         onClick={handleLogin}
                     >
-                        Log In
+                        Sign In
                     </Button>
                     <Link
                         component="button"

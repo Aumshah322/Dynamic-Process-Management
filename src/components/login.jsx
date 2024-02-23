@@ -1,54 +1,48 @@
 import React, { useState } from 'react';
 import { Container, TextField, Button, Typography, Box, Paper } from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom';
+import AuthService from '../AuthService';
 
 
 
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState(false);
+  const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const navigate = useNavigate();
 
-  fetch('http://10.100.112.99:8080/api/test/all')
-  .then(response => response.json())
-  .then(data => {
-    // Handle the API response data
-    console.log(data);
-  })
-  .catch(error => {
-    // Handle any errors
-    console.error('Error:', error);
-  });
+  // fetch('http://10.100.112.99:8080/api/test/all')
+  // .then(response => response.json())
+  // .then(data => {
+  //   // Handle the API response data
+  //   console.log(data);
+  // })
+  // .catch(error => {
+  //   // Handle any errors
+  //   console.error('Error:', error);
+  // });
 
 
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const handleLogin = () => {
-    let emailError = false;
+  const handleLogin = async () => {
+    let usernameError = false;
     let passwordError = false;
-  
-    if (!email.trim()) {
-      setEmailError(true);
-      emailError = true;
-    } else {
-      setEmailError(false);
-    }
-  
+
     if (!password.trim()) {
       setPasswordError('Password is required');
       passwordError = true;
     } else {
       setPasswordError(false);
     }
-  
-    if (emailError) {
-      setEmailError('Email is required');
+    if (!username.trim()) {
+      setUsernameError('Username is required');
+    } else {
+      setUsernameError(false);
+    }
+
+    if ( usernameError) {
+      setUsernameError('Username is required');
       return;
     }
     if ( passwordError) {
@@ -56,24 +50,34 @@ const LoginPage = () => {
       return;
     }
   
-    if (!validateEmail(email)) {
-      setEmailError('Invalid email');
-      return;
-    }
-  
     if (password.length < 8) {
       setPasswordError('true');
       return;
     }
+
+    let details = {username, password}
+       try {
+        const authService = new AuthService();
+        const userData = await authService.signup(details);
+         console.log('Response Headers:', response.headers);
+        // const sessionKey = response.headers;
+        const token = response.headers.get('token');
+ 
+        localStorage.setItem('token', token);
+        console.log("Token:",token)
+     
+        console.log('Signup successful:', sessionKey);
+        if (response){
+          console.log(response)
+          navigate('/Dashboard');
+        }
+      } catch (error) {
+        console.error('Signup failed:', error.message);
+      }
   
-    if (email === 'example@example.com' && password === 'password') {
-      setAuthenticated(true); // Set authentication state to true
-      navigate('/dashboard');
-    } else {
-      // Display authentication error message
-      setEmailError('Invalid email or password');
-      setPasswordError('Invalid email or password');
-    }
+
+  
+
 
     // console.log('Logging in with:', email, password);
     // navigate('/dashboard');
@@ -82,15 +86,13 @@ const LoginPage = () => {
 
 //  navigate('/dashboard', {state: {email,password}});
 
-const emailChange = (e) => {
-  const newEmail = e.target.value;
-  setEmail(newEmail);
-  if (!newEmail.trim()) {
-    setEmailError('Email is required');
-  } else if (!validateEmail(newEmail)) {
-    setEmailError('Invalid email');
+const usernameChange = (e) => {
+  const newUsername = e.target.value;
+  setUsername(newUsername);
+  if (!newUsername.trim()) {
+    setUsernameError('Username is required');
   } else {
-    setEmailError(false);
+    setUsernameError(false);
   }
 };
 
@@ -116,17 +118,17 @@ const goToSignUp = () =>{navigate('/signUp')}
       <Box sx={{ marginTop: 8, textAlign: 'center' }}>
         <Typography variant="h5">Login</Typography>
         <TextField
-          margin="normal"
-          required
-          fullWidth
-          label="Email Address"
-          type='email'
-          value={email}
-          onChange={emailChange}
-          onClick={emailChange}
-          error={!!emailError}
-          helperText={emailError || null}
-        />
+            margin="normal"
+            required
+            fullWidth
+            label="Username"
+            type='text'
+            value={username}
+            onChange={usernameChange}
+            onClick={usernameChange}
+            error={!!usernameError}
+            helperText={usernameError || null}
+          />
         <TextField
           margin="normal"
           required
