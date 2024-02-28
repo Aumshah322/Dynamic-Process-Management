@@ -21,7 +21,6 @@ import Dashboard from './dashboard';
           rows={users}
           columns={columns}
           pageSize={10}
-          checkboxSelection
         />
       </div>
     );

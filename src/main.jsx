@@ -7,12 +7,25 @@ import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } 
 import './index.css'
 import SignUp from './components/signup.jsx'
 
-const router= createBrowserRouter(
+import ProtectedRoute from './ProtectedRoute.jsx'
+
+
+// const PrivateRoute = async () => {
+//   const authService = new AuthService();
+//   const userData = await authService.signin(details);
+//   return (
+//     userData.token ? <Outlet /> : <Navigate to="/login" />
+//   )
+// }
+
+const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element= {<Layout/>} >
-      <Route path='' element= {<LoginPage/>}/>
-      <Route path='dashboard' element= {<Dashboard/>}/>
-      <Route path='signUp' element= {<SignUp/>}/>
+    <Route path='/' element={<Layout />} >
+      <Route path='' element={<LoginPage />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path='dashboard' element={<Dashboard />} />
+      </Route>
+      <Route path='signUp' element={<SignUp />} />
     </Route>
   )
 )

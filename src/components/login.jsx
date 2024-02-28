@@ -51,29 +51,30 @@ const LoginPage = () => {
     }
   
     if (password.length < 8) {
-      setPasswordError('true');
+      setPasswordError('Password must be 8 characters!');
       return;
     }
 
-    let details = {username, password}
-       try {
-        const authService = new AuthService();
-        const userData = await authService.signup(details);
-         console.log('Response Headers:', response.headers);
-        // const sessionKey = response.headers;
-        const token = response.headers.get('token');
- 
+    let details = { username, password };
+    try {
+      const authService = new AuthService();
+      const userData = await authService.signin(details);
+      
+      // Check if token is received
+      const token = userData.token;
+      if (token) {
+        // Store token in local storage
         localStorage.setItem('token', token);
-        console.log("Token:",token)
-     
-        console.log('Signup successful:', sessionKey);
-        if (response){
-          console.log(response)
-          navigate('/Dashboard');
-        }
-      } catch (error) {
-        console.error('Signup failed:', error.message);
+  
+        // Navigate to Dashboard
+        navigate('/dashboard');
+      } else {
+        console.error('Token not received');
       }
+    } catch (error) {
+      console.error('Signin failed:', error.message);
+      alert(error.message);
+    }
   
 
   
@@ -165,6 +166,7 @@ const goToSignUp = () =>{navigate('/signUp')}
 
   );
 };
+
 
 export default LoginPage;
 
