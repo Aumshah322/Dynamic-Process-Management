@@ -5,78 +5,61 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
- 
+import TextareaAutosize from '@mui/material/TextareaAutosize';
+
+
 const EditDialog = ({ open, user, onClose, onSave }) => {
   const [editedUser, setEditedUser] = useState({ ...user });
- 
+
   useEffect(() => {
     // Update the editedUser state when the user prop changes
     setEditedUser({ ...user });
   }, [user]);
- 
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditedUser((prev) => ({ ...prev, [name]: value }));
   };
- 
+
   const handleSave = () => {
     // Add logic to save the edited user
     // For simplicity, you can log the edited user details
     onSave(editedUser);
     console.log('Edited User:', editedUser);
- 
+
     // Close the dialog
     onClose();
   };
- 
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Edit User</DialogTitle>
       <DialogContent>
         <TextField
-          label="First Name"
-          name="firstName"
-          value={editedUser.firstName || ''}
+          label="Name"
+          name="name"
+          value={editedUser.name || ''}
           onChange={handleInputChange}
-          style={{marginRight: "5px", width:'260px'}}
+          style={{ marginRight: "5px", width: '260px' }}
           margin="dense"
         />
-        <TextField
-          label="Last Name"
-          name="lastName"
-          value={editedUser.lastName || ''}
+<br></br><br></br>
+        <TextareaAutosize
+          name="description"
+          label="description "
+          value={editedUser.description || ''}
           onChange={handleInputChange}
-          style={{marginRight: "5px", width:'260px'}}
-          margin="dense"
+          style={{
+            width: '100%',
+            border: '1px solid black',
+            marginBottom: '10px'
+          }}
+          minRows={3}
+          placeholder="Description" 
         />
-         <TextField
-          label="User Name"
-          name="userName"
-          value={editedUser.userName || ''}
-          onChange={handleInputChange}
-          style={{marginRight: "5px", width:'260px'}}
-          margin="dense"
-        />
-        <TextField
-          label="PhoneNumber "
-          name="phoneNumber"
-          value={editedUser.phoneNumber|| ''}
-          onChange={handleInputChange}
-          style={{marginRight: "5px", width:'260px'}}
-          margin="dense"
-         
-        />
-        <TextField
-          label="email"
-          name="email"
-          value={editedUser.email || ''}
-          onChange={handleInputChange}
-         
-          style={{marginRight: "20px", width: '525px'}}
-          margin="dense"
- 
-        />
-   
+
+
+
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="primary">
@@ -89,6 +72,5 @@ const EditDialog = ({ open, user, onClose, onSave }) => {
     </Dialog>
   );
 };
- 
+
 export default EditDialog;
- 

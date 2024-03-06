@@ -7,6 +7,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import EditDialog from './EditDialog';
+import HeaderBar from '../header/header';
 
 function Dashboard() {
     const location = useLocation();
@@ -99,8 +100,9 @@ function Dashboard() {
 
     return (
         <div>
+                  <HeaderBar />
             <div style={{ padding: 10, height: '50px', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography style={{ fontSize: '25px', fontWeight: '600' }}>USER MANAGEMENT SYSTEM</Typography>
+                <Typography style={{ fontSize: '25px', fontWeight: '600', position: 'static' }}>USER MANAGEMENT SYSTEM</Typography>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <FormDialog />
                 </div>
