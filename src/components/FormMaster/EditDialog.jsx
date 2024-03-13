@@ -6,6 +6,8 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
+import CustomAccordion from './FormField/FormAccordion';
+import ActionAccordion from './FormAction/ActionAccordion';
 
 
 const EditDialog = ({ open, user, onClose, onSave }) => {
@@ -69,6 +71,8 @@ const EditDialog = ({ open, user, onClose, onSave }) => {
           Save
         </Button>
       </DialogActions>
+      <CustomAccordion/>
+      <ActionAccordion/>
     </Dialog>
   );
 };

@@ -25,9 +25,9 @@ const router = createBrowserRouter(
       <Route path='' element={<LoginPage />} />
       <Route element={<ProtectedRoute />}>
         <Route path='dashboard' element={<Dashboard />} />
-        <Route path='formMaster' element={<FDashboard />} />
-      </Route>
 
+      </Route>
+      <Route path='formMaster' element={<FDashboard />} />
       <Route path='signUp' element={<SignUp />} />
     </Route>
   )

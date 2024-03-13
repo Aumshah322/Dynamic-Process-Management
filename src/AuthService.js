@@ -2,7 +2,7 @@
 class AuthService {
     async signup(userData) {
       try {
-        const response = await fetch('http://10.100.112.99:8080/api/auth/signup', {
+        const response = await fetch('http://10.100.111.99:8080/api/auth/signup', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ class AuthService {
 
     async signin(details) {
         try {
-          const response = await fetch('http://10.100.112.99:8080/api/auth/signin', {
+          const response = await fetch('http://10.100.111.99:8080/api/auth/signin', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
