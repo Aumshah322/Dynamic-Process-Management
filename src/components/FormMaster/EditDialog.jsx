@@ -34,7 +34,7 @@ const EditDialog = ({ open, user, onClose, onSave }) => {
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
       <DialogTitle>Edit User</DialogTitle>
       <DialogContent>
         <TextField
@@ -45,7 +45,7 @@ const EditDialog = ({ open, user, onClose, onSave }) => {
           style={{ marginRight: "5px", width: '260px' }}
           margin="dense"
         />
-<br></br><br></br>
+        <br></br><br></br>
         <TextareaAutosize
           name="description"
           label="description "
@@ -57,7 +57,7 @@ const EditDialog = ({ open, user, onClose, onSave }) => {
             marginBottom: '10px'
           }}
           minRows={3}
-          placeholder="Description" 
+          placeholder="Description"
         />
 
 
@@ -71,8 +71,8 @@ const EditDialog = ({ open, user, onClose, onSave }) => {
           Save
         </Button>
       </DialogActions>
-      <CustomAccordion/>
-      <ActionAccordion/>
+      <CustomAccordion />
+      <ActionAccordion />
     </Dialog>
   );
 };

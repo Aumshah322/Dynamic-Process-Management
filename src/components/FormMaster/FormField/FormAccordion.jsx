@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Accordion, AccordionSummary, AccordionDetails,Button, TextField, FormControl, InputLabel, MenuItem, Select, IconButton } from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails, Button, TextField, FormControl, InputLabel, MenuItem, Select, IconButton } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { DataGrid} from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
 
@@ -13,8 +13,39 @@ export default function CustomAccordion() {
   const [fieldName, setFieldName] = useState('');
   const [maxLength, setMaxLength] = useState('');
   const [defaultValue, setDefaultValue] = useState('');
-  const [data, setData] = useState([]);
-  const [selectedRow, setSelectedRow] = useState(null); 
+  const [data, setData] = useState([
+    {
+      "id": 1,
+      "controlType": "textfield",
+      "fieldName": "name",
+      "displayOrder": "1",
+      "maxLength": "8",
+      "disabled": "no",
+      "required": "yes",
+      "defaultValue": ""
+    },
+    {
+      "id": 0.6935281981609382,
+      "controlType": "textfield",
+      "displayOrder": "2",
+      "required": "yes",
+      "disabled": "no",
+      "fieldName": "username",
+      "maxLength": "",
+      "defaultValue": ""
+    },
+    {
+      "id": 0.04840120202241982,
+      "controlType": "textfield",
+      "displayOrder": "3",
+      "required": "yes",
+      "disabled": "no",
+      "fieldName": "email",
+      "maxLength": "",
+      "defaultValue": ""
+    }
+  ]);
+  const [selectedRow, setSelectedRow] = useState(null);
 
   const controlTypeChange = (event) => {
     setControlType(event.target.value);
@@ -45,39 +76,23 @@ export default function CustomAccordion() {
   };
 
   const handleDelete = (id) => {
-    const updatedRows = data .filter(row => row.id !== id);
-    setData (updatedRows);
+    const updatedRows = data.filter(row => row.id !== id);
+    setData(updatedRows);
   };
 
   const handleSave = () => {
     const displayOrderExists = data.some(row => row.displayOrder === displayOrder);
-    
+
     if (displayOrderExists) {
-        alert("Display Order must be unique.");
-        return;
+      alert("Display Order must be unique.");
+      return;
     }
 
     if (selectedRow) {
-        const updatedRows = data.map(row => {
-            if (row.id === selectedRow.id) {
-                return {
-                    ...row,
-                    controlType,
-                    displayOrder,
-                    isRequired,
-                    isDisabled,
-                    fieldName,
-                    maxLength,
-                    defaultValue
-                };
-            }
-            return row;
-        });
-        setData(updatedRows);
-        setSelectedRow(null);
-    } else {
-        const newRow = {
-            id: Math.random(),
+      const updatedRows = data.map(row => {
+        if (row.id === selectedRow.id) {
+          return {
+            ...row,
             controlType,
             displayOrder,
             isRequired,
@@ -85,23 +100,39 @@ export default function CustomAccordion() {
             fieldName,
             maxLength,
             defaultValue
-        };
-        setData([...data, newRow]);
-    }
-};
-
-   
-    const clearFields = () => {
-      setDisplayOrder('');
-      setControlType('');
-      setIsRequired('');
-      setIsDisabled('');
-      setFieldName('');
-      setMaxLength('');
-      setDefaultValue('');
+          };
+        }
+        return row;
+      });
+      setData(updatedRows);
       setSelectedRow(null);
-    };
-   
+    } else {
+      const newRow = {
+        id: Math.random(),
+        controlType,
+        displayOrder,
+        isRequired,
+        isDisabled,
+        fieldName,
+        maxLength,
+        defaultValue
+      };
+      setData([...data, newRow]);
+    }
+  };
+
+
+  const clearFields = () => {
+    setDisplayOrder('');
+    setControlType('');
+    setIsRequired('');
+    setIsDisabled('');
+    setFieldName('');
+    setMaxLength('');
+    setDefaultValue('');
+    setSelectedRow(null);
+  };
+
 
   const handleEdit = (row) => {
     setSelectedRow(row);
@@ -121,14 +152,14 @@ export default function CustomAccordion() {
     {
       field: 'Action', headerName: 'Action', width: 150,
       renderCell: (params) => (
-          <>
-              <IconButton onClick={() => handleEdit(params.row)}>
-                  <EditIcon />
-              </IconButton>
-              <IconButton onClick={() => handleDelete(params.row.id)}>
-                <DeleteOutlineIcon />
-              </IconButton>
-          </>
+        <>
+          <IconButton onClick={() => handleEdit(params.row)}>
+            <EditIcon />
+          </IconButton>
+          <IconButton onClick={() => handleDelete(params.row.id)}>
+            <DeleteOutlineIcon />
+          </IconButton>
+        </>
       )
     }
   ];
@@ -141,14 +172,15 @@ export default function CustomAccordion() {
         </AccordionSummary>
         <AccordionDetails>
           <div>
-            <TextField id="displayOrder" label="Display Order" variant="outlined" disabled={!!selectedRow} value={displayOrder} type="number" onChange={displayOrderChange} />
-            <FormControl fullWidth>
+            <TextField id="displayOrder" label="Display Order" variant="outlined" disabled={!!selectedRow} value={displayOrder} type="number" onChange={displayOrderChange} style={{ marginRight: "15px" }} />
+            <FormControl>
               <InputLabel id="controlType">Control Type</InputLabel>
               <Select
                 labelId="controlType"
                 id="control-select"
                 value={controlType}
                 onChange={controlTypeChange}
+                style={{ marginRight: "15px" }}
               >
                 <MenuItem value="picklist">picklist</MenuItem>
                 <MenuItem value="multiple picklist">multiple picklist</MenuItem>
@@ -160,38 +192,44 @@ export default function CustomAccordion() {
                 <MenuItem value="textarea">textarea</MenuItem>
               </Select>
             </FormControl>
-            <FormControl fullWidth>
+            <TextField id="fieldName" label="Field Name" variant="outlined" onChange={fieldNameChange} value={fieldName} style={{ marginRight: "15px" }} />
+            <FormControl>
               <InputLabel id="isRequired">Is Required</InputLabel>
               <Select
                 labelId="isRequired"
                 id="isRequired-select"
                 value={isRequired}
                 onChange={isRequiredChange}
+                style={{ marginRight: "15px" }}
               >
                 <MenuItem value={10}>yes</MenuItem>
                 <MenuItem value={20}>no</MenuItem>
               </Select>
             </FormControl>
-            <FormControl fullWidth>
+            <FormControl >
               <InputLabel id="isDisabled">Is Disabled</InputLabel>
               <Select
                 labelId="isDisabled"
                 id="isDisabled-select"
                 value={isDisabled}
                 onChange={isDisabledChange}
+                style={{ marginRight: "15px" }}
               >
                 <MenuItem value={10}>yes</MenuItem>
                 <MenuItem value={20}>no</MenuItem>
               </Select>
             </FormControl>
-            <TextField id="fieldName" label="Field Name" variant="outlined" onChange={fieldNameChange} value={fieldName} />
-            <TextField id="maxLength" label="Max Length" variant="outlined" onChange={maxLengthChange} value={maxLength} />
-            <TextField id="defaultValue" label="Default Value" variant="outlined" onChange={defaultValueChange} value={defaultValue} />
-            <Button onClick={handleSave}>Save</Button>
-            <Button onClick={clearFields}>Add</Button>
+            <div className="sRow" style={{ marginTop: '5px' }}>
+              <TextField id="maxLength" label="Max Length" variant="outlined" onChange={maxLengthChange} value={maxLength} style={{ marginRight: "15px" }} />
+              <TextField id="defaultValue" label="Default Value" variant="outlined" onChange={defaultValueChange} value={defaultValue} style={{ marginRight: "15px" }} />
+            </div>
+            <div className="but" style={{marginTop:'15px',textAlign: 'left',display: 'flex', justifyContent: 'flex-end' }}>
+              <Button onClick={handleSave} variant="contained" style={{ marginRight: '5px' }}>Save</Button>
+              <Button onClick={clearFields} variant="contained">Add</Button>
+            </div>
           </div>
         </AccordionDetails>
-        <DataGrid rows={data } columns={columns} />
+        <DataGrid rows={data} columns={columns} />
       </Accordion>
 
     </div>

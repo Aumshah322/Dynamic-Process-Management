@@ -15,7 +15,37 @@ export default function ActionAccordion() {
     const [successMsg, setsuccessMsg] = useState('');
     const [color, setcolor] = useState('');
     const [defaultValue, setDefaultValue] = useState('');
-    const [data, setData] = useState([]);
+    const [data, setData] = useState([
+        {
+            "id": 1,
+            "color": "yellow",
+            "controlType": "button",
+            "text": "save",
+            "displayOrder": "1",
+            "success": "success",
+            "failure": "no"
+        },
+        {
+            "id": 0.4100180468503791,
+            "controlType": "button",
+            "displayOrder": "2",
+            "text": "cancel",
+            "success": "",
+            "failure": "",
+            "color": "",
+            "defaultValue": ""
+        },
+        {
+            "id": 0.7595405644721089,
+            "controlType": "submit",
+            "displayOrder": "3",
+            "text": "save",
+            "success": "",
+            "failure": "",
+            "color": "",
+            "defaultValue": ""
+        }
+    ]);
     const [selectedRow, setSelectedRow] = useState(null);
 
     const controlTypeChange = (event) => {
@@ -48,12 +78,7 @@ export default function ActionAccordion() {
     };
 
     const handleSave = () => {
-        const displayOrderExists = data.some(row => row.displayOrder === displayOrder);
 
-        if (displayOrderExists) {
-            alert("Display Order must be unique.");
-            return;
-        }
 
         if (selectedRow) {
             const updatedRows = data.map(row => {
@@ -66,27 +91,35 @@ export default function ActionAccordion() {
                         isDisabled,
                         text,
                         color,
-                        defaultValue
                     };
                 }
                 return row;
+
             });
+
             setData(updatedRows);
             setSelectedRow(null);
         } else {
+            const displayOrderExists = data.some(row => row.displayOrder === displayOrder);
+
+            if (displayOrderExists) {
+                alert("Display Order must be unique.");
+                return;
+            }
             const newRow = {
                 id: Math.random(),
                 controlType,
                 displayOrder,
-                isRequired,
-                isDisabled,
                 text,
                 color,
                 successMsg,
                 failureMsg,
             };
             setData([...data, newRow]);
+            console.log(data);
         }
+
+        clearFields();
     };
 
 
@@ -105,13 +138,14 @@ export default function ActionAccordion() {
 
     const handleEdit = (row) => {
         setSelectedRow(row);
-        setControlType(row.controlType);
         setDisplayOrder(row.displayOrder);
+        setControlType(row.controlType);
         settext(row.text);
         setcolor(row.color);
-        setDefaultValue(row.successMsg);
-        setDefaultValue(row.failureMsg);
+        setsuccessMsg(row.successMsg);
+        setfailureMsg(row.failureMsg);
     };
+
 
     const columns = [
         { field: 'displayOrder', headerName: 'Display Order', width: 150 },
@@ -133,38 +167,40 @@ export default function ActionAccordion() {
     ];
 
     return (
-        <div style={{  width: '100%' }}>
+        <div style={{ width: '100%' }}>
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     Form Action
                 </AccordionSummary>
                 <AccordionDetails>
                     <div>
-                        <TextField id="displayOrder" label="Display Order" variant="outlined" disabled={!!selectedRow} value={displayOrder} type="number" onChange={displayOrderChange} />
-                        <FormControl fullWidth>
+                        <TextField id="displayOrder" label="Display Order"style={{ marginRight: "15px" }} variant="outlined" disabled={!!selectedRow} value={displayOrder} type="number" onChange={displayOrderChange} />
+                        <FormControl >
                             <InputLabel id="controlType">Control Type</InputLabel>
                             <Select
                                 labelId="controlType"
                                 id="control-select"
                                 value={controlType}
                                 onChange={controlTypeChange}
+                                style={{ marginRight: "15px" }}
                             >
                                 <MenuItem value="button">button</MenuItem>
                                 <MenuItem value="submit">submit</MenuItem>
                             </Select>
                         </FormControl>
-                        <TextField id="text" label="text" variant="outlined" onChange={textChange} value={text} />
-                        <TextField id="color" label="Max Length" variant="outlined" onChange={colorChange} value={color} />
+                        <TextField id="text" label="text" variant="outlined" style={{ marginRight: "15px" }} onChange={textChange} value={text} />
+                        <TextField id="color" label="color" variant="outlined" style={{ marginRight: "15px" }} onChange={colorChange} value={color} />
+                        <div className="msg" style={{marginTop:'15px'}}>
                         <TextareaAutosize
                             autoFocus
                             margin="dense"
                             id="successMsg"
                             name="successMsg"
                             placeholder="Success Message"
-                            style={{ width: '100%', border: '1px solid black', marginBottom: '10px' }}
+                            style={{ width: '500px', border: '1px solid black', marginBottom: '10px', marginRight: '15px' }}
                             value={successMsg}
                             onChange={successMsgChange}
-                            minRows={3}
+                            minRows={2}
                         />
                         <TextareaAutosize
                             autoFocus
@@ -172,16 +208,19 @@ export default function ActionAccordion() {
                             id="failureMsg"
                             name="failureMsg"
                             placeholder="failureMsg"
-                            style={{ width: '100%', border: '1px solid black', marginBottom: '10px' }}
+                            style={{ width: '500px', border: '1px solid black', marginBottom: '10px' }}
                             value={failureMsg}
                             onChange={failureMsgChange}
-                            minRows={3}
+                            minRows={2}
                         />
-                        <Button onClick={handleSave}>Save</Button>
-                        <Button onClick={clearFields}>Add</Button>
+                        </div>
+                        <div className="but" style={{marginTop:'15px',textAlign: 'left',display: 'flex', justifyContent: 'flex-end'}}>
+                            <Button onClick={handleSave}  variant="contained" style={{ marginRight: '5px' }} >Save</Button>
+                            <Button onClick={clearFields}  variant="contained" >Add</Button>
+                        </div>
                     </div>
                 </AccordionDetails>
-                    <DataGrid rows={data} columns={columns} />
+                <DataGrid rows={data} columns={columns} />
             </Accordion>
 
         </div>

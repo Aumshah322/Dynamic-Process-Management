@@ -1,0 +1,31 @@
+[
+    {
+        "id": 1,
+        "color": "yellow",
+        "controlType": "button",
+        "text": "save",
+        "displayOrder": "1",
+        "success": "success",
+        "failure": "no"
+    },
+    {
+        "id": 0.4100180468503791,
+        "controlType": "button",
+        "displayOrder": "4",
+        "text": "cancel",
+        "success": "",
+        "failure": "",
+        "color": "",
+        "defaultValue": ""
+    },
+    {
+        "id": 0.7595405644721089,
+        "controlType": "submit",
+        "displayOrder": "6",
+        "text": "save",
+        "success": "",
+        "failure": "",
+        "color": "",
+        "defaultValue": ""
+    }
+]

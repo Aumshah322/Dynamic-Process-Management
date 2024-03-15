@@ -71,3 +71,47 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+   
+#control-select  {
+  height: 20px;
+  font-size: 15px;
+  width: 125px;
+  margin-left: 32px;
+}
+
+#isRequired-select  {
+  height: 20px;
+  font-size: 15px;
+  width: 125px;
+}
+
+#isDisabled-select{
+  height: 20px;
+  font-size: 15px;
+  width: 125px;
+}
+
+#maxLength  {
+  height: 20px;
+  font-size: 20px;
+  width: 125px;
+}
+
+   
+#fieldName {
+    height: 20px;
+    font-size: 20px;
+    width: 300px;
+}
+
+#displayOrder  {
+  height: 20px;
+  font-size: 20px;
+  width: 125px;
+}
+
+#defaultValue  {
+  height: 20px;
+  font-size: 20px;
+  width: 125px;
+}

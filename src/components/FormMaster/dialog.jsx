@@ -66,6 +66,7 @@ export default function FormDialog() {
       <Dialog
         open={open}
         onClose={handleClose}
+        maxWidth="lg" fullWidth
         PaperProps={{
           component: 'form',
           onSubmit: (event) => {
@@ -89,6 +90,7 @@ export default function FormDialog() {
             // Navigate to '/formMaster' with formJson data
             navigate('/formMaster', { state: { formJson } });
           },
+
         }}
       >
         <DialogTitle style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>Add Form <CancelIcon onClick={handleClose} /></DialogTitle>
@@ -127,8 +129,8 @@ export default function FormDialog() {
 
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} style={{ textTransform: 'capitalize' }}>Cancel</Button>
-          <Button type="submit" style={{ textTransform: 'capitalize' }}>Save</Button>
+          <Button onClick={handleClose} variant="contained" style={{ textTransform: 'capitalize' }}>Cancel</Button>
+          <Button type="submit" variant="contained"  style={{ textTransform: 'capitalize' }}>Save</Button>
         </DialogActions>
         {/* Conditionally render the accordion */}
         {showAccordion && (
