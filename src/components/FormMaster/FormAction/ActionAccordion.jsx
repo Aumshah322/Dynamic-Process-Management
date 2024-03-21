@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Accordion, AccordionSummary, AccordionDetails, Button, TextField, FormControl, TextareaAutosize, InputLabel, MenuItem, Select, IconButton } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DataGrid } from '@mui/x-data-grid';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
 
-export default function ActionAccordion() {
+export default function ActionAccordion({formaction, onDataChange}) {
     const [controlType, setControlType] = useState('');
     const [displayOrder, setDisplayOrder] = useState('');
     const [isRequired, setIsRequired] = useState('');
@@ -15,37 +15,13 @@ export default function ActionAccordion() {
     const [successMsg, setsuccessMsg] = useState('');
     const [color, setcolor] = useState('');
     const [defaultValue, setDefaultValue] = useState('');
-    const [data, setData] = useState([
-        {
-            "id": 1,
-            "color": "yellow",
-            "controlType": "button",
-            "text": "save",
-            "displayOrder": "1",
-            "success": "success",
-            "failure": "no"
-        },
-        {
-            "id": 0.4100180468503791,
-            "controlType": "button",
-            "displayOrder": "2",
-            "text": "cancel",
-            "success": "",
-            "failure": "",
-            "color": "",
-            "defaultValue": ""
-        },
-        {
-            "id": 0.7595405644721089,
-            "controlType": "submit",
-            "displayOrder": "3",
-            "text": "save",
-            "success": "",
-            "failure": "",
-            "color": "",
-            "defaultValue": ""
-        }
-    ]);
+    const [data, setData] = useState(formaction || []);
+   
+    useEffect(() => {
+      setData(formaction || []);
+    }, [formaction]);
+   
+
     const [selectedRow, setSelectedRow] = useState(null);
 
     const controlTypeChange = (event) => {
@@ -75,6 +51,8 @@ export default function ActionAccordion() {
     const handleDelete = (id) => {
         const updatedRows = data.filter(row => row.id !== id);
         setData(updatedRows);
+        onDataChange(updatedRows)
+
     };
 
     const handleSave = () => {
@@ -98,6 +76,7 @@ export default function ActionAccordion() {
             });
 
             setData(updatedRows);
+            onDataChange(updatedRows)
             setSelectedRow(null);
         } else {
             const displayOrderExists = data.some(row => row.displayOrder === displayOrder);
@@ -116,6 +95,7 @@ export default function ActionAccordion() {
                 failureMsg,
             };
             setData([...data, newRow]);
+            onDataChange([...data, newRow])
             console.log(data);
         }
 
@@ -148,9 +128,9 @@ export default function ActionAccordion() {
 
 
     const columns = [
-        { field: 'displayOrder', headerName: 'Display Order', width: 150 },
-        { field: 'text', headerName: 'text', width: 150 },
-        { field: 'controlType', headerName: 'Control Type', width: 150 },
+        { field: 'displayOrder', headerName: 'Display Order', width: 120 },
+        { field: 'text', headerName: 'text', width: 450 },
+        { field: 'controlType', headerName: 'Control Type', width: 450 },
         {
             field: 'Action', headerName: 'Action', width: 150,
             renderCell: (params) => (

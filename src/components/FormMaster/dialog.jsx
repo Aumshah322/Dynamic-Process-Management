@@ -16,6 +16,16 @@ export default function FormDialog() {
   const [nameError, setNameError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
   const [showAccordion, setShowAccordion] = useState(false);
+  const [field,setfield]= useState([]);
+  const [action,setAction]= useState([]);
+
+  const handleFieldChange=(updatedField)=>{
+    setfield(updatedField);
+  }
+
+  const handleActionChange = (updatedAction) => {
+    setAction(updatedAction);
+  };
 
   const navigate = useNavigate();
 
@@ -25,6 +35,7 @@ export default function FormDialog() {
 
   const handleClose = () => {
     setOpen(false);
+    // setShowAccordion(false);
   };
 
   const nameChange = (e) => {
@@ -50,17 +61,11 @@ export default function FormDialog() {
   return (
     <React.Fragment>
       <Button
-        variant="outlined"
+        variant="contained"
         onClick={handleClickOpen}
-        style={{
-          marginLeft: '735px',
-          marginTop: '5px',
-          backgroundColor: 'blue',
-          color: 'white',
-          textTransform: 'capitalize',
-        }}
+        style={{marginRight:'15px'}}
       >
-        Add User
+        Add Form
       </Button>
 
       <Dialog
@@ -73,7 +78,7 @@ export default function FormDialog() {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries(formData.entries());
-            const { name, description } = formJson;
+            const { name, description,  } = formJson;
 
             // Check if name and description are empty
             if (!name || !description) {
@@ -83,6 +88,8 @@ export default function FormDialog() {
             }
 
             setShowAccordion(true);
+            formJson.formField = field;
+            console.log(field);
 
             // Close dialog after submitting form
             // handleClose();
@@ -102,23 +109,24 @@ export default function FormDialog() {
             name="name"
             label="Name"
             type="text"
-            style={{ width: '100%', border: '1px solid black', marginBottom: '10px' }}
-            variant="outlined"
+            style={{ width: '100%', marginBottom: '10px' }}
+
             onChange={nameChange}
             error={nameError}
             helperText={nameError ? 'First Name required' : ''}
           />
-          <TextareaAutosize
-            autoFocus
-            margin="dense"
-            id="description"
-            name="description"
-            placeholder="Description"
-            style={{ width: '100%', border: '1px solid black', marginBottom: '10px' }}
-            onChange={descriptionChange}
-            error={descriptionError}
-            minRows={3}
-          />
+<TextareaAutosize
+  autoFocus
+  margin="dense"
+  id="description"
+  name="description"
+  variant="outlined"
+  placeholder="Description"
+  style={{ width: '100%', marginBottom: '10px' }}
+  onChange={descriptionChange}
+  error={descriptionError ? "true" : undefined} // Convert boolean to string
+  minRows={3}
+/>
           {descriptionError && (
             <div style={{ color: 'red', fontSize: '12px' }}>
               Description required
@@ -135,10 +143,10 @@ export default function FormDialog() {
         {/* Conditionally render the accordion */}
         {showAccordion && (
           <>
-            <CustomAccordion/>
-            <ActionAccordion/>
+     <CustomAccordion onDataChange={handleFieldChange}/>
+     <ActionAccordion  onDataChange={handleActionChange}/>
            </>
-       
+
           )}
       </Dialog>
     </React.Fragment>

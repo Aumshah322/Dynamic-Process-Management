@@ -119,7 +119,7 @@ export default function FormDialog() {
 
   return (
     <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen} style={{ marginLeft: '735px', marginTop: '5px', backgroundColor: 'blue', color: 'white', textTransform: 'capitalize' }}>
+      <Button variant="contained" onClick={handleClickOpen} style={{marginRight:'15px'}}>
         Add User
       </Button>
 
@@ -174,7 +174,7 @@ export default function FormDialog() {
             label="First Name"
             type="text"
             style={{ width: '175px', marginRight: '6px' }}
-            variant="standard"
+            variant="outlined"
             onChange={fNameChange}
             onClick={fNameChange}
             error={fNameError}
@@ -188,7 +188,7 @@ export default function FormDialog() {
             label="Last Name"
             type="text"
             style={{ width: '175px', marginRight: '6px' }}
-            variant="standard"
+            variant="outlined"
           />
           <TextField
             autoFocus
@@ -198,7 +198,7 @@ export default function FormDialog() {
             label="User Name"
             type="text"
             style={{ width: '175px', marginRight: '6px' }}
-            variant="standard"
+            variant="outlined"
             onChange={uNameChange}
             onClick={uNameChange}
             error={unameError}
@@ -213,7 +213,7 @@ export default function FormDialog() {
             style={{ width: '175px', marginRight: '6px' }}
             type="text"
             fullWidth
-            variant="standard"
+            variant="outlined"
             onChange={handlePhoneNumberChange}
             onClick={handlePhoneNumberChange}
             error={!!error}
@@ -229,7 +229,7 @@ export default function FormDialog() {
             style={{ width: '175px', marginRight: '6px' }}
             type="email"
             fullWidth
-            variant="standard"
+            variant="outlined"
             onChange={emailChange}
             onClick={emailChange}
             error={!!emailError}
@@ -246,7 +246,7 @@ export default function FormDialog() {
             type="password"
             fullWidth
             style={{ width: '175px', marginRight: '6px' }}
-            variant="standard"
+            variant="outlined"
             onChange={handlePasswordChange}
             onClick={handlePasswordChange}
             error={!!passwordError}
@@ -263,7 +263,7 @@ export default function FormDialog() {
             style={{ width: '175px', marginRight: '6px' }}
             type="password"
             fullWidth
-            variant="standard"
+            variant="outlined"
             onChange={handleConfirmPasswordChange}
             onClick={handleConfirmPasswordChange}
             error={!!cPasswordError} 

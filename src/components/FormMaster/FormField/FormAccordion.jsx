@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Accordion, AccordionSummary, AccordionDetails, Button, TextField, FormControl, InputLabel, MenuItem, Select, IconButton } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DataGrid } from '@mui/x-data-grid';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
 
-export default function CustomAccordion() {
+export default function CustomAccordion({formfield,onDataChange}) {
   const [controlType, setControlType] = useState('');
   const [displayOrder, setDisplayOrder] = useState('');
   const [isRequired, setIsRequired] = useState('');
@@ -13,39 +13,15 @@ export default function CustomAccordion() {
   const [fieldName, setFieldName] = useState('');
   const [maxLength, setMaxLength] = useState('');
   const [defaultValue, setDefaultValue] = useState('');
-  const [data, setData] = useState([
-    {
-      "id": 1,
-      "controlType": "textfield",
-      "fieldName": "name",
-      "displayOrder": "1",
-      "maxLength": "8",
-      "disabled": "no",
-      "required": "yes",
-      "defaultValue": ""
-    },
-    {
-      "id": 0.6935281981609382,
-      "controlType": "textfield",
-      "displayOrder": "2",
-      "required": "yes",
-      "disabled": "no",
-      "fieldName": "username",
-      "maxLength": "",
-      "defaultValue": ""
-    },
-    {
-      "id": 0.04840120202241982,
-      "controlType": "textfield",
-      "displayOrder": "3",
-      "required": "yes",
-      "disabled": "no",
-      "fieldName": "email",
-      "maxLength": "",
-      "defaultValue": ""
-    }
-  ]);
+
   const [selectedRow, setSelectedRow] = useState(null);
+  const [data, setData] = useState(formfield || []);
+ 
+  useEffect(() => {
+    setData(formfield || []);
+    //console.log(formfield);
+  }, [formfield]);
+ 
 
   const controlTypeChange = (event) => {
     setControlType(event.target.value);
@@ -78,15 +54,11 @@ export default function CustomAccordion() {
   const handleDelete = (id) => {
     const updatedRows = data.filter(row => row.id !== id);
     setData(updatedRows);
+    onDataChange(updatedRows);
   };
 
   const handleSave = () => {
-    const displayOrderExists = data.some(row => row.displayOrder === displayOrder);
 
-    if (displayOrderExists) {
-      alert("Display Order must be unique.");
-      return;
-    }
 
     if (selectedRow) {
       const updatedRows = data.map(row => {
@@ -105,8 +77,16 @@ export default function CustomAccordion() {
         return row;
       });
       setData(updatedRows);
+      onDataChange(updatedRows); 
       setSelectedRow(null);
+      //console.log(updatedRows);
     } else {
+      const displayOrderExists = data.some(row => row.displayOrder === displayOrder);
+
+      if (displayOrderExists) {
+        alert("Display Order must be unique.");
+        return;
+      }
       const newRow = {
         id: Math.random(),
         controlType,
@@ -118,7 +98,12 @@ export default function CustomAccordion() {
         defaultValue
       };
       setData([...data, newRow]);
+      onDataChange([...data, newRow]);
+      console.log((newRow));
+      
     }
+  
+
   };
 
 
@@ -146,9 +131,9 @@ export default function CustomAccordion() {
   };
 
   const columns = [
-    { field: 'displayOrder', headerName: 'Display Order', width: 150 },
-    { field: 'fieldName', headerName: 'Field Name', width: 150 },
-    { field: 'controlType', headerName: 'Control Type', width: 150 },
+    { field: 'displayOrder', headerName: 'Display Order', width: 120 },
+    { field: 'fieldName', headerName: 'Field Name', width: 450 },
+    { field: 'controlType', headerName: 'Control Type', width: 450 },
     {
       field: 'Action', headerName: 'Action', width: 150,
       renderCell: (params) => (
