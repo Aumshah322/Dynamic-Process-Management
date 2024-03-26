@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 
-const EditDialog = ({ open, user, onSave, onClose, mode }) => {
+const EditDialog = ({ open, user, onSave, onClose, mode, isVisible}) => {
   const [editedUser, setEditedUser] = useState({ ...user });
   const dialogTitle = mode === 'add' ? 'Add New Form' : 'Edit Form';
   const [controlType, setControlType] = useState('');
@@ -22,6 +22,7 @@ const EditDialog = ({ open, user, onSave, onClose, mode }) => {
   const [defaultValue, setDefaultValue] = useState('');
   const [selectedRow, setSelectedRow] = useState(null);
   const [data, setData] = useState([]);
+  const [accordionsVisible,setAccordionsVisible]= useState(false)
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -35,8 +36,11 @@ const EditDialog = ({ open, user, onSave, onClose, mode }) => {
       
     }
     onSave(updatedUser);
-    console.log(updatedUser);
-    // onClose(); 
+    if (mode === 'add') {
+      setAccordionsVisible(true);
+    } else {
+      onClose(); // Close the dialog after saving changes for edit mode
+    }
   };
 
   const controlTypeChange = (event) => {
@@ -67,15 +71,7 @@ const EditDialog = ({ open, user, onSave, onClose, mode }) => {
     setDefaultValue(event.target.value);
   };
 
-  const handleDelete = (id) => {
-    const updatedRows = data.filter(row => row.id !== id);
-    setData(updatedRows);
-    onDataChange(updatedRows);
-  };
-
   const handleSave1 = () => {
-
-
     if (selectedRow) {
       const updatedRows = data.map(row => {
         if (row.id === selectedRow.id) {
@@ -94,10 +90,8 @@ const EditDialog = ({ open, user, onSave, onClose, mode }) => {
       });
       setData(updatedRows);
       setSelectedRow(null);
-      //console.log(updatedRows);
     } else {
       const displayOrderExists = data.some(row => row.displayOrder === displayOrder);
-
       if (displayOrderExists) {
         alert("Display Order must be unique.");
         return;
@@ -113,12 +107,17 @@ const EditDialog = ({ open, user, onSave, onClose, mode }) => {
         defaultValue
       };
       setData([...data, newRow]);
-      console.log((newRow));
       
     }
-  
-
+    clearFields();
   };
+  
+  const handleDelete = (id) => {
+    const updatedRows = data.filter(row => row.id !== id);
+    setData(updatedRows);
+    setSelectedRow(null);
+  };
+  
 
 
   const clearFields = () => {
@@ -134,6 +133,7 @@ const EditDialog = ({ open, user, onSave, onClose, mode }) => {
 
 
   const handleEdit = (row) => {
+   
     setSelectedRow(row);
     setControlType(row.controlType);
     setDisplayOrder(row.displayOrder);
@@ -164,8 +164,13 @@ const EditDialog = ({ open, user, onSave, onClose, mode }) => {
   ];
 
   useEffect(() => {
-    setEditedUser({ ...user });
+
+    if (user && Array.isArray(user.formfields)) {
+      setEditedUser({ ...user });
+      setData([...user.formfields]); // Update form fields from user prop
+    }
   }, [user]);
+  
 
 
   return (
@@ -203,6 +208,7 @@ const EditDialog = ({ open, user, onSave, onClose, mode }) => {
           Save
         </Button>
       </DialogActions>
+      {(isVisible || accordionsVisible) && (
       <div>
         <div style={{ width: '100%' }}>
           <Accordion>
@@ -274,6 +280,7 @@ const EditDialog = ({ open, user, onSave, onClose, mode }) => {
         </div>
 
       </div>
+      )}
 
     </Dialog>
   );

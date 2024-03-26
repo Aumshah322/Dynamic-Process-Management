@@ -11,23 +11,18 @@ import { useLocation } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
+
  
 const FormMaster = () => {
-  const location = useLocation();
-  const { formJson } = location.state || {};
   const [isOpen, setIsOpen] = useState(false);
+  const [editableUser, setEditableUser] = useState(null);
+  const [showAccordion, setShowAccordion]= useState(false);
 
  
   const openDialog = () => {
     setIsOpen(true);
   };
  
-  const [newFormDetails, setNewFormDetails] = useState({
-  name: '',
-  description: '',
-  formfields: [],
-  formactions: [],
-});
   const [users, setUsers] = useState([
     {
       id: 1,
@@ -100,23 +95,24 @@ const FormMaster = () => {
     },
   ]);
  
- 
   const handleSaveUser = (newUser) => {
+    console.log(newUser);
     setUsers(prevUsers => [
       ...prevUsers,
       {
         id: prevUsers.length + 1,
-        ...newUser
+        ...newUser,
+        formfields: newUser.formfields || [],
+        formactions: newUser.formactions || []
       }
     ]);
-    setIsOpen(false);
+    setShowAccordion(true)
   };
- 
- 
+  
   const handleSaveEdit = (editableUser) => {
     // Find the index of the user to be edited
     const userIndex = users.findIndex((user) => user.id === editableUser.id);
- 
+    
     if (userIndex !== -1) {
       // Update the user in the users state
       const updatedUsers = [...users];
@@ -127,27 +123,12 @@ const FormMaster = () => {
       };
       setUsers(updatedUsers);
     }
+
+    // Close the edit dialog
     setEditableUser(null);
   };
- 
-  const [isInitialMount, setIsInitialMount] = useState(true);
-  const [editableUser, setEditableUser] = useState(null);
- 
-  useEffect(() => {
-    if (!isInitialMount && formJson && Object.keys(formJson).length > 0) {
-      setUsers((prevUsers) => [
-        ...prevUsers,
-        {
-          id: prevUsers.length + 1,
-          name: formJson.name || '',
-          description: formJson.description || '',
-          formfields: formJson.formfields || [],
-          formactions: formJson.formactions || []
-        },
-      ]);
-    }
-    setIsInitialMount(false);
-  }, [formJson, isInitialMount]);
+  
+
  
   const columns = [
     {
@@ -185,13 +166,14 @@ const FormMaster = () => {
   };
  
   const handleEdit = (row) => {
+    console.log(row);
     setEditableUser(row);
+    setShowAccordion(true);
   };
  
   const handleCloseEditDialog = () => {
     setEditableUser(null);
   };
- 
   return (
     <>
       <div style={{ margin: '0' }}>
@@ -207,7 +189,8 @@ const FormMaster = () => {
           onClose={() => setIsOpen(false)}
           mode="add"
           onSave={handleSaveUser}
-          user={newFormDetails} 
+          user={editableUser} 
+        
         />
       )}
         </div>
@@ -218,13 +201,16 @@ const FormMaster = () => {
             pageSize={9}
             disableRowSelectionOnClick
           />
+            {editableUser && (
           <EditDialog
             open={Boolean(editableUser)}
             user={editableUser}
             onSave={handleSaveEdit}
             onClose={handleCloseEditDialog}
-           
+            mode="edit"
+            isVisible={showAccordion}
           />
+            )}
         </Box>
       </div>
     </>
