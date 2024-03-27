@@ -22,7 +22,7 @@ const FormMaster = () => {
   const openDialog = () => {
     setIsOpen(true);
   };
- 
+
   const [users, setUsers] = useState([
     {
       id: 1,
@@ -64,17 +64,17 @@ const FormMaster = () => {
         {
           "id": 1,
           "color": "yellow",
-          "controlType": "button",
+          "controlTypeAction": "button",
           "text": "save",
-          "displayOrder": "1",
+          "displayOrderAction": "1",
           "success": "success",
           "failure": "no",
           "defaultValue": ""
         },
         {
           "id": 0.4100180468503791,
-          "controlType": "button",
-          "displayOrder": "2",
+          "controlTypeAction": "button",
+          "displayOrderAction": "2",
           "text": "cancel",
           "success": "",
           "failure": "",
@@ -83,8 +83,8 @@ const FormMaster = () => {
         },
         {
           "id": 0.7595405644721089,
-          "controlType": "submit",
-          "displayOrder": "3",
+          "controlTypeAction": "submit",
+          "displayOrderAction": "3",
           "text": "save",
           "success": "",
           "failure": "",
@@ -106,7 +106,7 @@ const FormMaster = () => {
         formactions: newUser.formactions || []
       }
     ]);
-    setShowAccordion(true)
+    setIsOpen(false)
   };
   
   const handleSaveEdit = (editableUser) => {
